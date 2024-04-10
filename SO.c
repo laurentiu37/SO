@@ -182,3 +182,6 @@ int main(int argc, char *argv[]) {
 
     return EXIT_SUCCESS;
 }
+
+
+// de modificat astfel incat sa nu verifice cele 2 snapshot uri, strict fisierele daca au fost sau nu modificate si ce modificari au aparut.
