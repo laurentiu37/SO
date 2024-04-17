@@ -1,81 +1,89 @@
-/home/student/SO//lk.txt	1712737504	100644	0
-/home/student/SO//fisier.c	1712738105	100644	0
-/home/student/SO//p	1712738209	100755	17584
-/home/student/SO//PreviousSnapshot.txt	1712738531	100644	5265
-/home/student/SO//test.txt	1712738251	100644	0
-/home/student/SO//CurrentSnapshot.txt	1712738531	100644	0
-/home/student/SO//SO	1712734884	40755	4096
-/home/student/SO//SO/exemplu.txt	1712734884	100644	0
-/home/student/SO//SO/lab1.c	1712734322	100644	0
-/home/student/SO//SO/project.c	1712733553	100644	5398
-/home/student/SO//SO/lab2.c	1712734327	100644	0
-/home/student/SO//.git	1712738367	40755	4096
-/home/student/SO//.git/logs	1712733669	40755	4096
-/home/student/SO//.git/logs/refs	1712733669	40755	4096
-/home/student/SO//.git/logs/refs/heads	1712733669	40755	4096
-/home/student/SO//.git/logs/refs/heads/main	1712738367	100644	537
-/home/student/SO//.git/logs/refs/remotes	1712733669	40755	4096
-/home/student/SO//.git/logs/refs/remotes/origin	1712736697	40755	4096
-/home/student/SO//.git/logs/refs/remotes/origin/main	1712738439	100644	320
-/home/student/SO//.git/logs/refs/remotes/origin/HEAD	1712733669	100644	195
-/home/student/SO//.git/logs/HEAD	1712738367	100644	537
-/home/student/SO//.git/config	1712733669	100644	258
-/home/student/SO//.git/refs	1712733669	40755	4096
-/home/student/SO//.git/refs/tags	1712733669	40755	4096
-/home/student/SO//.git/refs/heads	1712738367	40755	4096
-/home/student/SO//.git/refs/heads/main	1712738367	100644	41
-/home/student/SO//.git/refs/remotes	1712733669	40755	4096
-/home/student/SO//.git/refs/remotes/origin	1712738439	40755	4096
-/home/student/SO//.git/refs/remotes/origin/main	1712738439	100644	41
-/home/student/SO//.git/refs/remotes/origin/HEAD	1712733669	100644	30
-/home/student/SO//.git/branches	1712733669	40755	4096
-/home/student/SO//.git/packed-refs	1712733669	100644	112
-/home/student/SO//.git/objects	1712738367	40755	4096
-/home/student/SO//.git/objects/78	1712736608	40755	4096
-/home/student/SO//.git/objects/78/f27ca205738a2fc671a874481884bc4caae543	1712736608	100444	787
-/home/student/SO//.git/objects/64	1712738367	40755	4096
-/home/student/SO//.git/objects/64/7934092444598c9399b606c331d0df4c53aa9b	1712738367	100444	243
-/home/student/SO//.git/objects/44	1712736619	40755	4096
-/home/student/SO//.git/objects/44/4996256f4ad85987fad784c94ab5d5f655c53d	1712736619	100444	171
-/home/student/SO//.git/objects/84	1712736608	40755	4096
-/home/student/SO//.git/objects/84/5c6e0d266778f0caab212264ffba621273d2ad	1712736608	100444	3777
-/home/student/SO//.git/objects/e6	1712738357	40755	4096
-/home/student/SO//.git/objects/e6/9de29bb2d1d6434b8b29ae775ad8c2e48c5391	1712738357	100444	15
-/home/student/SO//.git/objects/88	1712736619	40755	4096
-/home/student/SO//.git/objects/88/672866592d0aee3fb44ce77e680f4dfcce80c6	1712736619	100444	176
-/home/student/SO//.git/objects/04	1712738367	40755	4096
-/home/student/SO//.git/objects/04/c492d8201a25cd946ab6d281042af0f3255356	1712738367	100444	170
-/home/student/SO//.git/objects/70	1712738357	40755	4096
-/home/student/SO//.git/objects/70/d6fabc35d058bce89358991c244902fcc6ef46	1712738357	100444	1860
-/home/student/SO//.git/objects/info	1712733669	40755	4096
-/home/student/SO//.git/objects/2a	1712738357	40755	4096
-/home/student/SO//.git/objects/2a/5eb5929a237fb0a4330294e75f198fa39f720a	1712738357	100444	1027
-/home/student/SO//.git/objects/30	1712736608	40755	4096
-/home/student/SO//.git/objects/30/509398ce4701740757b714e460bc00e17ddbc1	1712736608	100444	424
-/home/student/SO//.git/objects/e8	1712738357	40755	4096
-/home/student/SO//.git/objects/e8/374b675d96319df12814fa7a51ddc002358738	1712738357	100444	4592
-/home/student/SO//.git/objects/pack	1712733669	40755	4096
-/home/student/SO//.git/objects/pack/pack-86d888ad466fe2e3be1a68533cf6f365325477e6.idx	1712733669	100444	1436
-/home/student/SO//.git/objects/pack/pack-86d888ad466fe2e3be1a68533cf6f365325477e6.pack	1712736608	100444	7141
-/home/student/SO//.git/info	1712733669	40755	4096
-/home/student/SO//.git/info/exclude	1712733669	100644	240
-/home/student/SO//.git/hooks	1712733669	40755	4096
-/home/student/SO//.git/hooks/applypatch-msg.sample	1712733669	100755	478
-/home/student/SO//.git/hooks/pre-rebase.sample	1712733669	100755	4898
-/home/student/SO//.git/hooks/fsmonitor-watchman.sample	1712733669	100755	4655
-/home/student/SO//.git/hooks/pre-commit.sample	1712733669	100755	1643
-/home/student/SO//.git/hooks/pre-applypatch.sample	1712733669	100755	424
-/home/student/SO//.git/hooks/pre-receive.sample	1712733669	100755	544
-/home/student/SO//.git/hooks/push-to-checkout.sample	1712733669	100755	2783
-/home/student/SO//.git/hooks/prepare-commit-msg.sample	1712733669	100755	1492
-/home/student/SO//.git/hooks/post-update.sample	1712733669	100755	189
-/home/student/SO//.git/hooks/commit-msg.sample	1712733669	100755	896
-/home/student/SO//.git/hooks/pre-push.sample	1712733669	100755	1374
-/home/student/SO//.git/hooks/update.sample	1712733669	100755	3650
-/home/student/SO//.git/hooks/pre-merge-commit.sample	1712733669	100755	416
-/home/student/SO//.git/description	1712733669	100644	73
-/home/student/SO//.git/index	1712738367	100644	737
-/home/student/SO//.git/COMMIT_EDITMSG	1712738367	100644	18
-/home/student/SO//.git/HEAD	1712733669	100644	21
-/home/student/SO//SO.c	1712738350	100644	6172
-/home/student/SO//README.md	1712733669	100644	4
+/home/student/SO//p 1713342610 100755 17632 12602346
+/home/student/SO//PreviousSnapshot.txt 1713342620 100644 6685 12602438
+/home/student/SO//examen 1713342625 100644 0 12602442
+/home/student/SO//CurrentSnapshot.txt 1713342645 100644 0 12602441
+/home/student/SO//SO 1713342643 40755 4096 13246981
+/home/student/SO//SO/examen 1713341972 100644 0 12602436
+/home/student/SO//SO/exemplu.txt 1712734884 100644 0 13239663
+/home/student/SO//SO/lab3.c 1712734327 100644 0 12602363
+/home/student/SO//SO/lab1.c 1712734322 100644 0 12602362
+/home/student/SO//SO/masina 1713342635 100644 0 13239485
+/home/student/SO//SO/laborator.txt 1713338923 100644 0 13239386
+/home/student/SO//SO/exercitii.txt 1713340903 100644 0 13239404
+/home/student/SO//.git 1712738639 40755 4096 12602347
+/home/student/SO//.git/logs 1712733669 40755 4096 13246921
+/home/student/SO//.git/logs/refs 1712733669 40755 4096 13246922
+/home/student/SO//.git/logs/refs/heads 1712733669 40755 4096 13246979
+/home/student/SO//.git/logs/refs/heads/main 1712738639 100644 708 13246980
+/home/student/SO//.git/logs/refs/remotes 1712733669 40755 4096 13246971
+/home/student/SO//.git/logs/refs/remotes/origin 1712736697 40755 4096 13246972
+/home/student/SO//.git/logs/refs/remotes/origin/main 1712738648 100644 480 13246749
+/home/student/SO//.git/logs/refs/remotes/origin/HEAD 1712733669 100644 195 13246974
+/home/student/SO//.git/logs/HEAD 1712738639 100644 708 13246978
+/home/student/SO//.git/config 1712733669 100644 258 12602353
+/home/student/SO//.git/refs 1712733669 40755 4096 13246909
+/home/student/SO//.git/refs/tags 1712733669 40755 4096 13246911
+/home/student/SO//.git/refs/heads 1712738639 40755 4096 13246910
+/home/student/SO//.git/refs/heads/main 1712738639 100644 41 13247021
+/home/student/SO//.git/refs/remotes 1712733669 40755 4096 13246918
+/home/student/SO//.git/refs/remotes/origin 1712738648 40755 4096 13246919
+/home/student/SO//.git/refs/remotes/origin/main 1712738648 100644 41 13238282
+/home/student/SO//.git/refs/remotes/origin/HEAD 1712733669 100644 30 13246920
+/home/student/SO//.git/branches 1712733669 40755 4096 12602348
+/home/student/SO//.git/packed-refs 1712733669 100644 112 12602355
+/home/student/SO//.git/objects 1712738639 40755 4096 13246912
+/home/student/SO//.git/objects/78 1712736608 40755 4096 13239323
+/home/student/SO//.git/objects/78/f27ca205738a2fc671a874481884bc4caae543 1712736608 100444 787 13239331
+/home/student/SO//.git/objects/50 1712738636 40755 4096 13247016
+/home/student/SO//.git/objects/50/e3c075483418d0d08c0bc4ca169c5296d9b633 1712738636 100444 1937 13247017
+/home/student/SO//.git/objects/64 1712738367 40755 4096 13247007
+/home/student/SO//.git/objects/64/7934092444598c9399b606c331d0df4c53aa9b 1712738367 100444 243 13247008
+/home/student/SO//.git/objects/44 1712736619 40755 4096 13246743
+/home/student/SO//.git/objects/44/4996256f4ad85987fad784c94ab5d5f655c53d 1712736619 100444 171 13246744
+/home/student/SO//.git/objects/84 1712736608 40755 4096 13239667
+/home/student/SO//.git/objects/84/5c6e0d266778f0caab212264ffba621273d2ad 1712736608 100444 3777 13239668
+/home/student/SO//.git/objects/b1 1712738639 40755 4096 13247019
+/home/student/SO//.git/objects/b1/3c061c8e09eae62feda71ffae62452dfb9ef28 1712738639 100444 170 13247020
+/home/student/SO//.git/objects/e6 1712738357 40755 4096 13247001
+/home/student/SO//.git/objects/e6/9de29bb2d1d6434b8b29ae775ad8c2e48c5391 1712738357 100444 15 13247006
+/home/student/SO//.git/objects/88 1712738639 40755 4096 13246739
+/home/student/SO//.git/objects/88/18c72bd2cc13612bb1d8785418487d24499ce3 1712738639 100444 243 13247018
+/home/student/SO//.git/objects/88/672866592d0aee3fb44ce77e680f4dfcce80c6 1712736619 100444 176 13246742
+/home/student/SO//.git/objects/04 1712738367 40755 4096 13247009
+/home/student/SO//.git/objects/04/c492d8201a25cd946ab6d281042af0f3255356 1712738367 100444 170 13247010
+/home/student/SO//.git/objects/70 1712738357 40755 4096 13239410
+/home/student/SO//.git/objects/70/d6fabc35d058bce89358991c244902fcc6ef46 1712738357 100444 1860 13239414
+/home/student/SO//.git/objects/info 1712733669 40755 4096 13246914
+/home/student/SO//.git/objects/2a 1712738357 40755 4096 13246999
+/home/student/SO//.git/objects/2a/5eb5929a237fb0a4330294e75f198fa39f720a 1712738357 100444 1027 13247000
+/home/student/SO//.git/objects/93 1712738636 40755 4096 13247014
+/home/student/SO//.git/objects/93/f17e88362edd3bed1b90debeb33c9e52ba7c8c 1712738636 100444 1299 13247015
+/home/student/SO//.git/objects/30 1712736608 40755 4096 13239625
+/home/student/SO//.git/objects/30/509398ce4701740757b714e460bc00e17ddbc1 1712736608 100444 424 13239628
+/home/student/SO//.git/objects/e8 1712738357 40755 4096 13239446
+/home/student/SO//.git/objects/e8/374b675d96319df12814fa7a51ddc002358738 1712738357 100444 4592 13246998
+/home/student/SO//.git/objects/pack 1712733669 40755 4096 13246913
+/home/student/SO//.git/objects/pack/pack-86d888ad466fe2e3be1a68533cf6f365325477e6.idx 1712733669 100444 1436 13246916
+/home/student/SO//.git/objects/pack/pack-86d888ad466fe2e3be1a68533cf6f365325477e6.pack 1712736608 100444 7141 13246915
+/home/student/SO//.git/info 1712733669 40755 4096 12602349
+/home/student/SO//.git/info/exclude 1712733669 100644 240 12602350
+/home/student/SO//.git/hooks 1712733669 40755 4096 12736340
+/home/student/SO//.git/hooks/applypatch-msg.sample 1712733669 100755 478 12736380
+/home/student/SO//.git/hooks/pre-rebase.sample 1712733669 100755 4898 12736437
+/home/student/SO//.git/hooks/fsmonitor-watchman.sample 1712733669 100755 4655 12736466
+/home/student/SO//.git/hooks/pre-commit.sample 1712733669 100755 1643 12736467
+/home/student/SO//.git/hooks/pre-applypatch.sample 1712733669 100755 424 12736468
+/home/student/SO//.git/hooks/pre-receive.sample 1712733669 100755 544 12736469
+/home/student/SO//.git/hooks/push-to-checkout.sample 1712733669 100755 2783 12736470
+/home/student/SO//.git/hooks/prepare-commit-msg.sample 1712733669 100755 1492 12736471
+/home/student/SO//.git/hooks/post-update.sample 1712733669 100755 189 12736472
+/home/student/SO//.git/hooks/commit-msg.sample 1712733669 100755 896 12736473
+/home/student/SO//.git/hooks/pre-push.sample 1712733669 100755 1374 12736474
+/home/student/SO//.git/hooks/update.sample 1712733669 100755 3650 12736475
+/home/student/SO//.git/hooks/pre-merge-commit.sample 1712733669 100755 416 12736476
+/home/student/SO//.git/description 1712733669 100644 73 12602351
+/home/student/SO//.git/index 1712738639 100644 737 12602352
+/home/student/SO//.git/COMMIT_EDITMSG 1712738639 100644 18 12602369
+/home/student/SO//.git/HEAD 1712733669 100644 21 12602354
+/home/student/SO//SO.c 1713342569 100644 6092 12602357
+/home/student/SO//README.md 1712733669 100644 4 12602356
