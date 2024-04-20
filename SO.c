@@ -13,6 +13,7 @@ struct Metadata
     mode_t mode;
     off_t size;
     ino_t inode;
+    int is_snapshot; // indicator pentru a marca fisierele snapshot
 };
 
 // functie pt obtinere date
@@ -33,6 +34,7 @@ struct Metadata get_metadata(const char *path)
     meta.mode = file_stat.st_mode;
     meta.size = file_stat.st_size;
     meta.inode = file_stat.st_ino;
+    meta.is_snapshot = 0; // inițializăm cu 0
 
     return meta;
 }
@@ -61,8 +63,14 @@ void creare_snapshot(const char *directory, FILE *snapshot_file)
 
         struct Metadata meta = get_metadata(full_path);
 
-        // scriere in snapshot
-        fprintf(snapshot_file, "%s %ld %o %lld %lu\n", meta.name, meta.last_modified, meta.mode, meta.size, meta.inode);
+        // marcajul fisierelor snapshot
+        if (strcmp(entry->d_name, "PreviousSnapshot.txt") == 0 || strcmp(entry->d_name, "CurrentSnapshot.txt") == 0)
+        {
+            meta.is_snapshot = 1;
+        }
+
+        // scriere în snapshot
+        fprintf(snapshot_file, "%s %ld %o %lld %lu %d\n", meta.name, meta.last_modified, meta.mode, meta.size, meta.inode, meta.is_snapshot);
 
         // if director -> recursiv
         if (S_ISDIR(meta.mode))
@@ -74,70 +82,80 @@ void creare_snapshot(const char *directory, FILE *snapshot_file)
     closedir(dir);
 }
 
-// se compara snapshot urile si se afiseaza modificarile
+// se compara snapshot-urile și se afișează modificările
 void comparare(FILE *prev_snapshot, FILE *current_snapshot)
 {
     struct Metadata prev_entry;
     struct Metadata current_entry;
-    int changes_detected = 0; // Variabila pentru a verifica daca s-au detectat modificari
-    // se citesc datele din snapshot uri si se compara fisierele
-    while (fscanf(current_snapshot, "%255s %ld %o %lld %lu\n", current_entry.name, &current_entry.last_modified, &current_entry.mode, &current_entry.size, &current_entry.inode) != EOF)
+    int changes_detected = 0; // Variabila pentru a verifica dacă s-au detectat modificări
+    // se citesc datele din snapshot-uri și se compară fișierele
+    while (fscanf(current_snapshot, "%255s %ld %o %lld %lu %d\n", current_entry.name, &current_entry.last_modified, &current_entry.mode, &current_entry.size, &current_entry.inode, &current_entry.is_snapshot) != EOF)
     {
+        if (current_entry.is_snapshot == 1)
+        {
+            continue; // se ignoră fișierele snapshot
+        }
+
         int found = 0;
         rewind(prev_snapshot);
         /* se repozitioneaza cursorul la inceputul fisierului anterior pentru a putea parcurge din nou fisierul de la inceput pentru a compara fiecare intrare din fisierul anterior cu
         fiecare intrare din fisierul curent. */
-        while (fscanf(prev_snapshot, "%255s %ld %o %lld %lu\n", prev_entry.name, &prev_entry.last_modified, &prev_entry.mode, &prev_entry.size, &prev_entry.inode) != EOF)
+        while (fscanf(prev_snapshot, "%255s %ld %o %lld %lu %d\n", prev_entry.name, &prev_entry.last_modified, &prev_entry.mode, &prev_entry.size, &prev_entry.inode, &prev_entry.is_snapshot) != EOF)
         {
             if (current_entry.inode == prev_entry.inode)
             {
                 found = 1;
-                if (strcmp(current_entry.name,prev_entry.name) != 0)
+                if (strcmp(current_entry.name, prev_entry.name) != 0)
                 {
                     printf("Redenumire: %s ->%s\n", prev_entry.name, current_entry.name);
                     changes_detected = 1;
                 }
 
-                /*if (current_entry.last_modified != prev_entry.last_modified) //Adaug asta in caz ca gasim fisierul si are acelasi nume, verificam data ultimei modificari sa stimm daca e modificat
+                if (current_entry.last_modified != prev_entry.last_modified) //Adaug asta în caz că găsim fișierul și are același nume, verificăm data ultimei modificări să știm dacă e modificat
                 {
-                    printf("Modificare: %s ->%s\n", prev_entry.name, current_entry.name);
+                    printf("Modificare: %s\n", current_entry.name);
                     changes_detected = 1;
-                }*/
+                }
                 break;
             }
         }
         if (!found)
         {
-            printf("Adaugare: %s\n", current_entry.name);
+            printf("Adăugare: %s\n", current_entry.name);
             changes_detected = 1;
         }
     }
 
     // verificare posibile fisiere sterse
-    rewind(prev_snapshot); // Punem cursorul la incept de fisier
+    rewind(prev_snapshot); // Punem cursorul la început de fisier
     rewind(current_snapshot);
-    while (fscanf(prev_snapshot, "%255s %ld %o %lld %lu\n", prev_entry.name, &prev_entry.last_modified, &prev_entry.mode, &prev_entry.size, &prev_entry.inode) != EOF)
+    while (fscanf(prev_snapshot, "%255s %ld %o %lld %lu %d\n", prev_entry.name, &prev_entry.last_modified, &prev_entry.mode, &prev_entry.size, &prev_entry.inode, &prev_entry.is_snapshot) != EOF)
     {
-            int found = 0;
-            rewind(current_snapshot);
-            while (fscanf(current_snapshot, "%255s %ld %o %lld %lu\n", current_entry.name, &current_entry.last_modified, &current_entry.mode, &current_entry.size, &current_entry.inode) != EOF)
+        if (prev_entry.is_snapshot == 1)
+        {
+            continue; // se ignora fisierele snapshot
+        }
+
+        int found = 0;
+        rewind(current_snapshot);
+        while (fscanf(current_snapshot, "%255s %ld %o %lld %lu %d\n", current_entry.name, &current_entry.last_modified, &current_entry.mode, &current_entry.size, &current_entry.inode, &current_entry.is_snapshot) != EOF)
+        {
+            if (prev_entry.inode == current_entry.inode)
             {
-                if (prev_entry.inode == current_entry.inode)
-                {
-                    found = 1;
-                    break;
-                }
+                found = 1;
+                break;
             }
-            if (!found)
-            {
-                printf("Stergere: %s\n", prev_entry.name);
-                changes_detected = 1;
-            }
+        }
+        if (!found)
+        {
+            printf("Ștergere: %s\n", prev_entry.name);
+            changes_detected = 1;
+        }
     }
 
     if (!changes_detected)
     {
-        printf("Nu s-au detectat modificari.\n");
+        printf("Nu s-au detectat modificări.\n");
     }
 }
 
