@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-// struct Metadata
+// Structura pentru metadatele unui fisier sau director
 struct Metadata
 {
     char name[256];
@@ -13,10 +13,11 @@ struct Metadata
     mode_t mode;
     off_t size;
     ino_t inode;
-    int is_snapshot; // indicator pentru a marca fisierele snapshot
+    int is_snapshot; // Indicator pentru a marca fisierele/directoarele de tip snapshot
+    int is_directory; // Indicator pentru a marca daca elementul este un director
 };
 
-// functie pt obtinere date
+// Functie pentru obtinerea metadatelor unui fisier sau director
 struct Metadata get_metadata(const char *path)
 {
     struct Metadata meta;
@@ -34,12 +35,13 @@ struct Metadata get_metadata(const char *path)
     meta.mode = file_stat.st_mode;
     meta.size = file_stat.st_size;
     meta.inode = file_stat.st_ino;
-    meta.is_snapshot = 0; // inițializăm cu 0
+    meta.is_snapshot = 0; // Initializam cu 0
+    meta.is_directory = S_ISDIR(file_stat.st_mode); // Verificam daca elementul este un director
 
     return meta;
 }
 
-// creare snapshot
+// Functie pentru crearea unui snapshot
 void creare_snapshot(const char *directory, FILE *snapshot_file)
 {
     DIR *dir;
@@ -55,7 +57,7 @@ void creare_snapshot(const char *directory, FILE *snapshot_file)
     {
         if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
         {
-            continue; // se ignora "." si ".."
+            continue; // Se ignoră "." și ".."
         }
 
         char full_path[512];
@@ -63,17 +65,17 @@ void creare_snapshot(const char *directory, FILE *snapshot_file)
 
         struct Metadata meta = get_metadata(full_path);
 
-        // marcajul fisierelor snapshot
+        // Marcajul fisierelor/directoarelor snapshot
         if (strcmp(entry->d_name, "PreviousSnapshot.txt") == 0 || strcmp(entry->d_name, "CurrentSnapshot.txt") == 0)
         {
             meta.is_snapshot = 1;
         }
 
-        // scriere în snapshot
-        fprintf(snapshot_file, "%s %ld %o %lld %lu %d\n", meta.name, meta.last_modified, meta.mode, meta.size, meta.inode, meta.is_snapshot);
+        // Scriere in snapshot
+        fprintf(snapshot_file, "%s %ld %o %lld %lu %d %d\n", meta.name, meta.last_modified, meta.mode, meta.size, meta.inode, meta.is_snapshot, meta.is_directory);
 
-        // if director -> recursiv
-        if (S_ISDIR(meta.mode))
+        // Daca este director, apelam recursiv functia pentru a crea snapshot-ul directorului
+        if (meta.is_directory)
         {
             creare_snapshot(full_path, snapshot_file);
         }
@@ -82,63 +84,99 @@ void creare_snapshot(const char *directory, FILE *snapshot_file)
     closedir(dir);
 }
 
-// se compara snapshot-urile și se afișează modificările
+// Functie pentru detectarea adaugarii unui fisier sau director
+void detectare_adaugare(struct Metadata current_entry)
+{
+    if (current_entry.is_directory)
+    {
+        printf("Adăugare director: %s\n", current_entry.name);
+    }
+    else
+    {
+        printf("Adăugare fișier: %s\n", current_entry.name);
+    }
+}
+
+// Functie pentru detectarea stergerii unui fișier sau director
+void detectare_stergere(struct Metadata prev_entry)
+{
+    if (prev_entry.is_directory)
+    {
+        printf("Ștergere director: %s\n", prev_entry.name);
+    }
+    else
+    {
+        printf("Ștergere fișier: %s\n", prev_entry.name);
+    }
+}
+
+// Functie pentru detectarea redenumirii unui fisier sau director
+void detectare_redenumire(struct Metadata prev_entry, struct Metadata current_entry)
+{
+    if (prev_entry.is_directory && current_entry.is_directory)
+    {
+        printf("Redenumire director: %s -> %s\n", prev_entry.name, current_entry.name);
+    }
+    else if (!prev_entry.is_directory && !current_entry.is_directory)
+    {
+        printf("Redenumire fișier: %s -> %s\n", prev_entry.name, current_entry.name);
+    }
+    else
+    {
+        printf("Conversie între fișier și director: %s -> %s\n", prev_entry.name, current_entry.name);
+    }
+}
+
+// Functie pentru compararea a două snapshot-uri si detectarea modificarilor
 void comparare(FILE *prev_snapshot, FILE *current_snapshot)
 {
     struct Metadata prev_entry;
     struct Metadata current_entry;
-    int changes_detected = 0; // Variabila pentru a verifica dacă s-au detectat modificări
-    // se citesc datele din snapshot-uri și se compară fișierele
-    while (fscanf(current_snapshot, "%255s %ld %o %lld %lu %d\n", current_entry.name, &current_entry.last_modified, &current_entry.mode, &current_entry.size, &current_entry.inode, &current_entry.is_snapshot) != EOF)
+    int changes_detected = 0; // Variabila pentru a verifica daca s-au detectat modificari
+
+    // Se compara fiecare fisier/director din snapshot-ul curent cu fiecare fisier/director din snapshot-ul anterior
+    while (fscanf(current_snapshot, "%255s %ld %o %lld %lu %d %d\n", current_entry.name, &current_entry.last_modified, &current_entry.mode, &current_entry.size, &current_entry.inode, &current_entry.is_snapshot, &current_entry.is_directory) != EOF)
     {
         if (current_entry.is_snapshot == 1)
         {
-            continue; // se ignoră fișierele snapshot
+            continue; // Se ignora fisierele/directoarele de tip snapshot
         }
 
         int found = 0;
         rewind(prev_snapshot);
-        /* se repozitioneaza cursorul la inceputul fisierului anterior pentru a putea parcurge din nou fisierul de la inceput pentru a compara fiecare intrare din fisierul anterior cu
-        fiecare intrare din fisierul curent. */
-        while (fscanf(prev_snapshot, "%255s %ld %o %lld %lu %d\n", prev_entry.name, &prev_entry.last_modified, &prev_entry.mode, &prev_entry.size, &prev_entry.inode, &prev_entry.is_snapshot) != EOF)
+
+        // Se cauta fisierul/directorul din snapshot-ul curent in snapshot-ul anterior
+        while (fscanf(prev_snapshot, "%255s %ld %o %lld %lu %d %d\n", prev_entry.name, &prev_entry.last_modified, &prev_entry.mode, &prev_entry.size, &prev_entry.inode, &prev_entry.is_snapshot, &prev_entry.is_directory) != EOF)
         {
             if (current_entry.inode == prev_entry.inode)
             {
                 found = 1;
                 if (strcmp(current_entry.name, prev_entry.name) != 0)
                 {
-                    printf("Redenumire: %s ->%s\n", prev_entry.name, current_entry.name);
+                    detectare_redenumire(prev_entry, current_entry);
                     changes_detected = 1;
                 }
-
-                if (current_entry.last_modified != prev_entry.last_modified) //Adaug asta în caz că găsim fișierul și are același nume, verificăm data ultimei modificări să știm dacă e modificat
-                {
-                    printf("Modificare: %s\n", current_entry.name);
-                    changes_detected = 1;
-                }
-                break;
             }
         }
         if (!found)
         {
-            printf("Adăugare: %s\n", current_entry.name);
+            detectare_adaugare(current_entry);
             changes_detected = 1;
         }
     }
 
-    // verificare posibile fisiere sterse
-    rewind(prev_snapshot); // Punem cursorul la început de fisier
-    rewind(current_snapshot);
-    while (fscanf(prev_snapshot, "%255s %ld %o %lld %lu %d\n", prev_entry.name, &prev_entry.last_modified, &prev_entry.mode, &prev_entry.size, &prev_entry.inode, &prev_entry.is_snapshot) != EOF)
+    // Se verifica posibilele fisiere/directoare sterse
+    rewind(prev_snapshot);
+    while (fscanf(prev_snapshot, "%255s %ld %o %lld %lu %d %d\n", prev_entry.name, &prev_entry.last_modified, &prev_entry.mode, &prev_entry.size, &prev_entry.inode, &prev_entry.is_snapshot, &prev_entry.is_directory) != EOF)
     {
         if (prev_entry.is_snapshot == 1)
         {
-            continue; // se ignora fisierele snapshot
+            continue; // Se ignora fisierele/directoarele de tip snapshot
         }
 
         int found = 0;
         rewind(current_snapshot);
-        while (fscanf(current_snapshot, "%255s %ld %o %lld %lu %d\n", current_entry.name, &current_entry.last_modified, &current_entry.mode, &current_entry.size, &current_entry.inode, &current_entry.is_snapshot) != EOF)
+        while (fscanf(current_snapshot, "%255s %ld %o %lld %lu %d %d\n", current_entry.name, &current_entry.last_modified, &current_entry.mode, &current_entry.size, &current_entry.inode, &current_entry.is_snapshot, &current_entry.is_directory) != EOF)
         {
             if (prev_entry.inode == current_entry.inode)
             {
@@ -148,7 +186,7 @@ void comparare(FILE *prev_snapshot, FILE *current_snapshot)
         }
         if (!found)
         {
-            printf("Ștergere: %s\n", prev_entry.name);
+            detectare_stergere(prev_entry);
             changes_detected = 1;
         }
     }
@@ -172,7 +210,7 @@ int main(int argc, char *argv[])
     FILE *prev_snapshot_file = fopen("PreviousSnapshot.txt", "r");
     if (prev_snapshot_file == NULL)
     {
-        printf("Fișierul anterior de snapshot nu a fost gasit. Se creeaza unul nou...\n");
+        printf("Fisierul anterior de snapshot nu a fost gasit. Se creeaza unul nou...\n");
         prev_snapshot_file = fopen("PreviousSnapshot.txt", "w");
         if (prev_snapshot_file == NULL)
         {
@@ -190,12 +228,13 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
 
+    // Crearea snapshot-ului curent
     creare_snapshot(directory, current_snapshot_file);
 
     fclose(current_snapshot_file);
     printf("Snapshot creat cu succes.\n");
 
-    // se compara anteriorul cu cel curent
+    // Se compara snapshot-urile anterior și curent
     prev_snapshot_file = fopen("PreviousSnapshot.txt", "r");
     current_snapshot_file = fopen("CurrentSnapshot.txt", "r");
 
@@ -210,7 +249,7 @@ int main(int argc, char *argv[])
     fclose(prev_snapshot_file);
     fclose(current_snapshot_file);
 
-    // se actualizeaza "PreviousSnapshot.txt" prin copierea continutului din cel curent in cel anterior pentru urmatoarea rulare
+    // Se actualizeaza "PreviousSnapshot.txt" prin copierea continutului din cel curent in cel anterior pentru urmatoarea rulare
     current_snapshot_file = fopen("CurrentSnapshot.txt", "r");
     prev_snapshot_file = fopen("PreviousSnapshot.txt", "w");
     if (prev_snapshot_file == NULL || current_snapshot_file == NULL)
